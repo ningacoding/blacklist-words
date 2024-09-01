@@ -13,7 +13,7 @@ interface FilterConfig {
   logProfanity?: boolean; 
 }
 
-class Filter {
+export class Filter {
   private words: Map<string, number>;
   private caseSensitive: boolean;
   private wordBoundaries: boolean;
@@ -155,5 +155,3 @@ class Filter {
     };
   }
 }
-
-export { Filter };

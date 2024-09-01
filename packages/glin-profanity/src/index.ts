@@ -1,3 +1,10 @@
-export { Filter } from './filters/Filter';
-export { useProfanityChecker } from './hooks/useProfanityChecker';
-export type { Language, CheckProfanityResult } from './types/types';
+import { Filter } from './filters/Filter';
+import { Language, CheckProfanityResult } from './types/types';
+
+interface Exports {
+  Filter:Filter,
+  Language: Language,
+  CheckProfanityResult: CheckProfanityResult,
+}
+
+export default Exports;
