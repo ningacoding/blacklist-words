@@ -37,6 +37,7 @@ export declare class Filter {
      */
     addWords(customWords?: string[]): void;
     evaluate(text: string, customWords?: string[]): {
+        percentageUsed: number;
         containsProfanity: boolean;
         profaneWords: string[];
         severityMap: {
