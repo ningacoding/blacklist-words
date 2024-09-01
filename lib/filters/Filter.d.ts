@@ -1,7 +1,7 @@
 import { Language, CheckProfanityResult } from "../types/types";
 interface FilterConfig {
     languages?: Language[];
-    similarityPercent?: number;
+    similarityPercentage?: number;
     allLanguages?: boolean;
     caseSensitive?: boolean;
     wordBoundaries?: boolean;
@@ -19,7 +19,7 @@ export declare class Filter {
     private severityLevels;
     private ignoreWords;
     private logProfanity;
-    private similarityPercent;
+    private similarityPercentage;
     /**
      * similarityPercent: default 50 means 50% similarity
      * @param config

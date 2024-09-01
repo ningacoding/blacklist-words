@@ -5,7 +5,7 @@ import { stringSimilarity } from "string-similarity-js";
 
 interface FilterConfig {
   languages?: Language[];
-  similarityPercent?: number;
+  similarityPercentage?: number;
   allLanguages?: boolean;
   caseSensitive?: boolean;
   wordBoundaries?: boolean;
@@ -24,7 +24,7 @@ export class Filter {
   private severityLevels: boolean;
   private ignoreWords: Set<string>;
   private logProfanity: boolean;
-  private similarityPercent: number;
+  private similarityPercentage: number;
 
   /**
    * similarityPercent: default 50 means 50% similarity
@@ -32,7 +32,7 @@ export class Filter {
    */
   constructor(config?: FilterConfig) {
     let words: string[] = [];
-    this.similarityPercent = config?.similarityPercent || 50;
+    this.similarityPercentage = config?.similarityPercentage || 50;
     this.caseSensitive = config?.caseSensitive ?? false;
     this.wordBoundaries = config?.wordBoundaries ?? true;
     this.replaceWith = config?.replaceWith;
@@ -174,8 +174,9 @@ export class Filter {
     const words = text.split(/\s+/);
     const profaneWords: string[] = [];
     const lengthTolerance = 1;
-    const similarityPercentTolerance = this.similarityPercent;
+    const similarityPercentTolerance = this.similarityPercentage;
     const chars = {
+      "@": "a",
       "4": "a",
       "3": "e",
       "1": "i",
@@ -187,7 +188,7 @@ export class Filter {
 
     for (const word of words) {
       const replacedNumbersWithLetters = word.replace(
-        /[4310]/g,
+        /[@4310]/g,
         (m) => chars[m],
       );
       const removedTildes = replacedNumbersWithLetters
