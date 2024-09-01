@@ -1,8 +1,11 @@
 import dictionary from "../data/dictionary";
 import { Language, CheckProfanityResult } from "../types/types";
+import Similar from "string-similarity";
+import { stringSimilarity } from "string-similarity-js";
 
 interface FilterConfig {
   languages?: Language[];
+  similarityPercent?: number;
   allLanguages?: boolean;
   caseSensitive?: boolean;
   wordBoundaries?: boolean;
@@ -21,9 +24,15 @@ export class Filter {
   private severityLevels: boolean;
   private ignoreWords: Set<string>;
   private logProfanity: boolean;
+  private similarityPercent: number;
 
+  /**
+   * similarityPercent: default 50 means 50% similarity
+   * @param config
+   */
   constructor(config?: FilterConfig) {
     let words: string[] = [];
+    this.similarityPercent = config?.similarityPercent || 50;
     this.caseSensitive = config?.caseSensitive ?? false;
     this.wordBoundaries = config?.wordBoundaries ?? true;
     this.replaceWith = config?.replaceWith;
@@ -153,28 +162,55 @@ export class Filter {
     };
   }
 
-  evaluate(text: string, customWords: string[] = []): CheckProfanityResult {
+  evaluate(
+    text: string,
+    customWords: string[] = [],
+  ): {
+    containsProfanity: boolean;
+    profaneWords: string[];
+    severityMap: { bestMatch: { target: string; rating: number } }[];
+    processedText: string;
+  } {
     const words = text.split(/\s+/);
     const profaneWords: string[] = [];
-    const severityMap: { [word: string]: number } = {};
+    const lengthTolerance = 1;
+    const similarityPercentTolerance = this.similarityPercent;
+    const chars = {
+      "4": "a",
+      "3": "e",
+      "1": "i",
+      "0": "o",
+    };
+    const dictWords = [...customWords, ...this.words.keys()];
 
-    // Check each word individually
+    const similarity: { bestMatch: { target: string; rating: number } }[] = [];
+
     for (const word of words) {
-      for (const dictWord of [...customWords, ...this.words.keys()]) {
-        const severity = this.evaluateSeverity(dictWord, word);
+      const replacedNumbersWithLetters = word.replace(
+        /[4310]/g,
+        (m) => chars[m],
+      );
+      const removedTildes = replacedNumbersWithLetters
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      const matching = Similar.findBestMatch(removedTildes, dictWords);
+      for (const dictWord of dictWords) {
+        const similar = stringSimilarity(dictWord, removedTildes);
         if (
-          severity !== undefined &&
-          !this.ignoreWords.has(dictWord.toLowerCase())
+          !this.ignoreWords.has(dictWord.toLowerCase()) &&
+          !!matching?.bestMatch &&
+          similar > similarityPercentTolerance / 100 &&
+          (dictWord.length > removedTildes.length - (lengthTolerance + 1) ||
+            dictWord.length < removedTildes.length + (lengthTolerance + 1))
         ) {
+          similarity.push(matching.bestMatch);
           profaneWords.push(word);
-          severityMap[word] = severity; // Use the actual word found in text as the key
         }
       }
     }
 
     const sentenceResult = this.evaluateSentence(text, customWords);
     profaneWords.push(...sentenceResult.profaneWords);
-    Object.assign(severityMap, sentenceResult.severityMap);
 
     let processedText = text;
     if (this.replaceWith) {
@@ -190,8 +226,7 @@ export class Filter {
       containsProfanity: profaneWords.length > 0,
       profaneWords: Array.from(new Set(profaneWords)),
       processedText: this.replaceWith ? processedText : undefined,
-      severityMap:
-        Object.keys(severityMap).length > 0 ? severityMap : undefined,
+      severityMap: similarity,
     };
   }
 }

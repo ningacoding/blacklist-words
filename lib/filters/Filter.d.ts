@@ -1,6 +1,7 @@
 import { Language, CheckProfanityResult } from "../types/types";
 interface FilterConfig {
     languages?: Language[];
+    similarityPercent?: number;
     allLanguages?: boolean;
     caseSensitive?: boolean;
     wordBoundaries?: boolean;
@@ -18,6 +19,11 @@ export declare class Filter {
     private severityLevels;
     private ignoreWords;
     private logProfanity;
+    private similarityPercent;
+    /**
+     * similarityPercent: default 50 means 50% similarity
+     * @param config
+     */
     constructor(config?: FilterConfig);
     private getRegex;
     private isFuzzyMatch;
@@ -31,7 +37,17 @@ export declare class Filter {
      */
     addWords(customWords?: string[]): void;
     evaluateSentence(text: string, customWords?: string[]): CheckProfanityResult;
-    evaluate(text: string, customWords?: string[]): CheckProfanityResult;
+    evaluate(text: string, customWords?: string[]): {
+        containsProfanity: boolean;
+        profaneWords: string[];
+        severityMap: {
+            bestMatch: {
+                target: string;
+                rating: number;
+            };
+        }[];
+        processedText: string;
+    };
 }
 export {};
 //# sourceMappingURL=Filter.d.ts.map
