@@ -7,12 +7,12 @@ Glin-Profanity is a lightweight and efficient npm package designed to detect and
 To install Glin-Profanity, use npm:
 
 ```bash
-npm install glin-profanity
+npm install @klazify/blacklist-words
 ```
 OR
 
 ```bash
-yarn add glin-profanity
+yarn add @klazify/blacklist-words
 ```
 ## Usage
 
@@ -22,7 +22,7 @@ Here's a simple example of how to use Glin-Profanity in a React application:
 
 ```typescript
 import React, { useState } from 'react';
-import { useProfanityChecker, Language } from 'glin-profanity';
+import { useProfanityChecker, Language } from '@klazify/blacklist-words';
 
 const App: React.FC = () => {
   const [text, setText] = useState('');
