@@ -40,7 +40,7 @@ export class Filter {
         }
       }
     } else {
-      const languages = config?.languages || ["en"];
+      const languages = config?.languages || ["none"];
       const languagesChecks = new Set<Language>(languages);
       if (languagesChecks.size !== 0) {
         languagesChecks.forEach((lang) => {
@@ -100,6 +100,19 @@ export class Filter {
     return false;
   }
 
+  /**
+   * This adds words on the fly,
+   * this DOES NOT save/persists words
+   * @param customWords
+   */
+  addWords(customWords: string[] = []) {
+    const newWords: string[] = [
+      ...Array.from(this.words.keys()),
+      ...customWords,
+    ];
+    this.words = new Map(newWords.map((word) => [word.toLowerCase(), 1]));
+  }
+
   evaluateSentence(
     text: string,
     customWords: string[] = [],
@@ -140,10 +153,7 @@ export class Filter {
     };
   }
 
-  evaluate(
-    text: string,
-    customWords: string[] = [],
-  ): CheckProfanityResult {
+  evaluate(text: string, customWords: string[] = []): CheckProfanityResult {
     const words = text.split(/\s+/);
     const profaneWords: string[] = [];
     const severityMap: { [word: string]: number } = {};

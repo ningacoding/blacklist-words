@@ -8,6 +8,7 @@ export interface CheckProfanityResult {
 
 export type Language =
   | "all"
+  | "none"
   | "be"
   | "bg"
   | "ca"

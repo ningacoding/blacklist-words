@@ -24,6 +24,12 @@ export declare class Filter {
     private isMergedMatch;
     private evaluateSeverity;
     isProfane(value: string, customWords?: string[]): boolean;
+    /**
+     * This adds words on the fly,
+     * this DOES NOT save/persists words
+     * @param customWords
+     */
+    addWords(customWords?: string[]): void;
     evaluateSentence(text: string, customWords?: string[]): CheckProfanityResult;
     evaluate(text: string, customWords?: string[]): CheckProfanityResult;
 }

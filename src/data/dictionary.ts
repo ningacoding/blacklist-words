@@ -5,6 +5,7 @@ export default {
   all: Object.keys(All)
     .map((key) => All[key])
     .flat(),
+  none: All.none,
   be: All.be,
   bg: All.bg,
   ca: All.ca,

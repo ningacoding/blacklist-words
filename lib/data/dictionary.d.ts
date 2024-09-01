@@ -1,5 +1,6 @@
 declare const _default: {
     all: any[];
+    none: any[];
     be: string[];
     bg: string[];
     ca: string[];
