@@ -14,5 +14,5 @@
     "esModuleInterop": true,
     "downlevelIteration": true
   },
-  "include": ["src/**/*", "packages/**/*"]
+  "include": ["packages/**/*"]
 }
