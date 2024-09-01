@@ -1,10 +1,9 @@
-import { Filter } from './filters/Filter';
-import { Language, CheckProfanityResult } from './types/types';
+import { Filter as FilterType } from "./filters/Filter";
+import {
+  Language as LangType,
+  CheckProfanityResult as CheckProfanityResultType,
+} from "./types/types";
 
-interface Exports {
-  Filter:Filter,
-  Language: Language,
-  CheckProfanityResult: CheckProfanityResult,
-}
-
-export default Exports;
+export type Filter = FilterType;
+export type Language = LangType;
+export type CheckProfanityResult = CheckProfanityResultType;
