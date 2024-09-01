@@ -38,7 +38,7 @@ export class Filter {
         }
       }
     } else {
-      const languages = config?.languages || ['english'];
+      const languages = config?.languages || ['en'];
       const languagesChecks = new Set<Language>(languages);
       if (languagesChecks.size !== 0) {
         languagesChecks.forEach(lang => {

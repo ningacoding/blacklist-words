@@ -1,46 +1,62 @@
-import Arabic from './arabic.json';
-import Chinese from './chinese.json';
-import Czech from './czech.json';
-import Danish from './danish.json';
-import Esperanto from './esperanto.json';
-import English from './english.json';
-import Finnish from './finnish.json';
-import German from './german.json';
-import Hindi from './hindi.json';
-import Hungarian from './hungarian.json';
-import Korean from './korean.json';
-import Norwegian from './Norwegian.json';
-import Persian from './persian.json';
-import Polish from './polish.json';
-import Portuguese from './portuguese.json';
-import Russian from './russian.json';
-import French from './french.json';
-import Italian from './italian.json';
-import Japanese from './japanese.json';
-import Turkish from './turkish.json';
-import Swedish from './swedish.json';
-import Thai from './thai.json';
+// https://raw.githubusercontent.com/thisandagain/washyourmouthoutwithsoap/develop/data/build.json
+import All from "./all.json";
+
 export default {
-  arabic: Arabic.words,
-  chinese: Chinese.words,
-  czech: Czech.words,
-  danish: Danish.words,
-  english: English.words,
-  esperanto: Esperanto.words,
-  finnish: Finnish.words,
-  french: French.words,
-  german: German.words,
-  hindi: Hindi.words,
-  hungarian: Hungarian.words,
-  italian: Italian.words,
-  japanese: Japanese.words,
-  korean: Korean.words,
-  norwegian: Norwegian.words,
-  persian: Persian.words,
-  polish: Polish.words,
-  portuguese: Portuguese.words,
-  russian: Russian.words,
-  turkish: Turkish.words,
-  swedish: Swedish.words,
-  thai: Thai.words,
+  all: Object.keys(All)
+    .map((key) => All[key])
+    .flat(),
+  be: All.be,
+  bg: All.bg,
+  ca: All.ca,
+  cs: All.cs,
+  cy: All.cy,
+  da: All.da,
+  de: All.de,
+  el: All.el,
+  en: All.en,
+  es: All.es,
+  et: All.et,
+  eu: All.eu,
+  fa: All.fa,
+  fi: All.fi,
+  fr: All.fr,
+  gd: All.gd,
+  gl: All.gl,
+  hi: All.hi,
+  hr: All.hr,
+  hu: All.hu,
+  hy: All.hy,
+  id: All.id,
+  is: All.is,
+  it: All.it,
+  ja: All.ja,
+  kn: All.kn,
+  ko: All.ko,
+  la: All.la,
+  lt: All.lt,
+  lv: All.lv,
+  mk: All.mk,
+  ml: All.ml,
+  mn: All.mn,
+  mr: All.mr,
+  ms: All.ms,
+  mt: All.mt,
+  my: All.my,
+  nl: All.nl,
+  pl: All.pl,
+  pt: All.pt,
+  ro: All.ro,
+  ru: All.ru,
+  sk: All.sk,
+  sl: All.sl,
+  sq: All.sq,
+  sr: All.sr,
+  sv: All.sv,
+  te: All.te,
+  th: All.th,
+  tr: All.tr,
+  uk: All.uk,
+  uz: All.uz,
+  vi: All.vi,
+  zu: All.zu,
 };
