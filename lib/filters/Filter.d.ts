@@ -1,4 +1,4 @@
-import { Language, CheckProfanityResult } from "../types/types";
+import { Language } from "../types/types";
 interface FilterConfig {
     languages?: Language[];
     similarityPercentage?: number;
@@ -36,7 +36,6 @@ export declare class Filter {
      * @param customWords
      */
     addWords(customWords?: string[]): void;
-    evaluateSentence(text: string, customWords?: string[]): CheckProfanityResult;
     evaluate(text: string, customWords?: string[]): {
         containsProfanity: boolean;
         profaneWords: string[];

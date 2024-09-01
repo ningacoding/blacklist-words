@@ -98,15 +98,8 @@ export class Filter {
   }
 
   isProfane(value: string, customWords: string[] = []): boolean {
-    for (const word of [...customWords, ...this.words.keys()]) {
-      if (
-        !this.ignoreWords.has(word.toLowerCase()) &&
-        this.evaluateSeverity(word, value) !== undefined
-      ) {
-        return true;
-      }
-    }
-    return false;
+    const result = this.evaluate(value, customWords);
+    return result.containsProfanity;
   }
 
   /**
@@ -122,50 +115,11 @@ export class Filter {
     this.words = new Map(newWords.map((word) => [word.toLowerCase(), 1]));
   }
 
-  evaluateSentence(
-    text: string,
-    customWords: string[] = [],
-  ): CheckProfanityResult {
-    const words = text.split(/\s+/);
-    const profaneWords: string[] = [];
-    const severityMap: { [word: string]: number } = {};
-
-    for (const word of words) {
-      for (const dictWord of [...customWords, ...this.words.keys()]) {
-        const severity = this.evaluateSeverity(dictWord, word);
-        if (
-          severity !== undefined &&
-          !this.ignoreWords.has(dictWord.toLowerCase())
-        ) {
-          profaneWords.push(word);
-          severityMap[word] = severity; // Use the actual word found in text as the key
-        }
-      }
-    }
-
-    let processedText = text;
-    if (this.replaceWith) {
-      for (const word of profaneWords) {
-        processedText = processedText.replace(
-          new RegExp(word, "gi"),
-          this.replaceWith,
-        );
-      }
-    }
-
-    return {
-      containsProfanity: profaneWords.length > 0,
-      profaneWords,
-      processedText: this.replaceWith ? processedText : undefined,
-      severityMap:
-        Object.keys(severityMap).length > 0 ? severityMap : undefined, // Only return if there are valid severities
-    };
-  }
-
   evaluate(
     text: string,
     customWords: string[] = [],
   ): {
+    percentageUsed: number;
     containsProfanity: boolean;
     profaneWords: string[];
     severityMap: { bestMatch: { target: string; rating: number } }[];
@@ -210,9 +164,6 @@ export class Filter {
       }
     }
 
-    const sentenceResult = this.evaluateSentence(text, customWords);
-    profaneWords.push(...sentenceResult.profaneWords);
-
     let processedText = text;
     if (this.replaceWith) {
       for (const word of profaneWords) {
@@ -224,6 +175,7 @@ export class Filter {
     }
 
     return {
+      percentageUsed: similarityPercentTolerance,
       containsProfanity: profaneWords.length > 0,
       profaneWords: Array.from(new Set(profaneWords)),
       processedText: this.replaceWith ? processedText : undefined,
