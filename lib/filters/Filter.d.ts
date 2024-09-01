@@ -1,4 +1,4 @@
-import { Language, CheckProfanityResult } from '../types/types';
+import { Language, CheckProfanityResult } from "../types/types";
 interface FilterConfig {
     languages?: Language[];
     allLanguages?: boolean;
@@ -23,9 +23,9 @@ export declare class Filter {
     private isFuzzyMatch;
     private isMergedMatch;
     private evaluateSeverity;
-    isProfane(value: string): boolean;
-    checkProfanityInSentence(text: string): CheckProfanityResult;
-    checkProfanity(text: string): CheckProfanityResult;
+    isProfane(value: string, customWords?: string[]): boolean;
+    evaluateSentence(text: string, customWords?: string[]): CheckProfanityResult;
+    evaluate(text: string, customWords?: string[]): CheckProfanityResult;
 }
 export {};
 //# sourceMappingURL=Filter.d.ts.map
