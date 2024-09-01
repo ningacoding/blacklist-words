@@ -10,7 +10,7 @@ interface FilterConfig {
     ignoreWords?: string[];
     logProfanity?: boolean;
 }
-declare class Filter {
+export declare class Filter {
     private words;
     private caseSensitive;
     private wordBoundaries;
@@ -27,5 +27,5 @@ declare class Filter {
     checkProfanityInSentence(text: string): CheckProfanityResult;
     checkProfanity(text: string): CheckProfanityResult;
 }
-export { Filter };
+export {};
 //# sourceMappingURL=Filter.d.ts.map

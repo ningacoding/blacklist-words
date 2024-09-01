@@ -1,5 +1,4 @@
 {
-    "extends": "../../tsconfig.json",
     "compilerOptions": {
       "outDir": "./lib",
       "rootDir": "./src",
@@ -7,8 +6,11 @@
       "declarationMap": true,
       "resolveJsonModule": true,
       "esModuleInterop": true,
-      "downlevelIteration": true, 
-      "target": "es2015"
+      "downlevelIteration": true,
+      "lib": ["es6", "dom"],
+      "sourceMap": true,
+      "jsx": "react",
+      "baseUrl": "./",
     },
     "include": [
       "src/**/*"
