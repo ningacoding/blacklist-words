@@ -17,7 +17,7 @@ interface FilterConfig {
 }
 
 export class Filter {
-  private words: Map<string, number>;
+  private words: string[];
   private caseSensitive: boolean;
   private wordBoundaries: boolean;
   private replaceWith?: string;
@@ -62,7 +62,7 @@ export class Filter {
       words = [...words, ...config.customWords];
     }
 
-    this.words = new Map(words.map((word) => [word.toLowerCase(), 1])); // Store words in lowercase
+    this.words = words.map((word) => word.toLowerCase());
   }
 
   private getRegex(word: string): RegExp {
@@ -108,11 +108,8 @@ export class Filter {
    * @param customWords
    */
   addWords(customWords: string[] = []) {
-    const newWords: string[] = [
-      ...Array.from(this.words.keys()),
-      ...customWords,
-    ];
-    this.words = new Map(newWords.map((word) => [word.toLowerCase(), 1]));
+    const newWords: string[] = [...this.words, ...customWords];
+    this.words = newWords.map((word) => word.toLowerCase());
   }
 
   evaluate(
@@ -136,7 +133,7 @@ export class Filter {
       "1": "i",
       "0": "o",
     };
-    const dictWords = [...customWords, ...this.words.keys()];
+    const dictWords = [...customWords, ...this.words];
 
     const similarity: { bestMatch: { target: string; rating: number } }[] = [];
 
